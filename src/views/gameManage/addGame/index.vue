@@ -1,0 +1,253 @@
+<!--
+ * @Descripttion:
+ * @version:
+ * @Author: ZhenghuaXie
+ * @Date: 2022-04-18 22:35:32
+ * @LastEditors: ZhenghuaXie
+ * @LastEditTime: 2022-04-20 17:17:33
+-->
+<script setup>
+import { reactive } from "vue";
+import { addGame, imageUpload, editGame } from "/@/api/gameManage";
+import { successMessage } from "/@/utils/message";
+
+const gameData = reactive({
+  data: {},
+  fileList: []
+});
+
+const httpRequest = options => {
+  imageUpload(options.file).then(({ data }) => {
+    gameData.data.img = data;
+  });
+};
+</script>
+<script>
+export default {
+  emits: ["confirm"],
+  data() {
+    return {
+      level: [
+        {
+          label: "校级",
+          value: "校级"
+        },
+        {
+          label: "省级",
+          value: "省级"
+        },
+        {
+          label: "国家级",
+          value: "国家级"
+        }
+      ],
+      subject: [
+        {
+          label: "理科",
+          value: "理科"
+        },
+        {
+          label: "工科",
+          value: "工科"
+        },
+        {
+          label: "文科",
+          value: "文科"
+        }
+      ],
+      rules: {
+        img: {
+          required: true,
+          message: "请上传海报",
+          trigger: "change"
+        },
+        name: {
+          required: true,
+          message: "请输入赛事名称",
+          trigger: "change"
+        },
+        organizer: {
+          required: true,
+          message: "请输入主办方",
+          trigger: "change"
+        },
+        sign_up_time: {
+          required: true,
+          message: "请选择报名时间",
+          trigger: "change"
+        },
+        game_time: {
+          required: true,
+          message: "请选择比赛时间",
+          trigger: "change"
+        },
+        subject: {
+          required: true,
+          message: "请选择竞赛科目",
+          trigger: "change"
+        },
+        level: {
+          required: true,
+          message: "请选择竞赛级别",
+          trigger: "change"
+        }
+      },
+      //判断是添加还是编辑比赛
+      operation: "add"
+    };
+  },
+  props: {
+    initData: {
+      type: Object
+    },
+    dialogVisible: {
+      type: Boolean
+    }
+  },
+  watch: {
+    initData: {
+      handler(val) {
+        if (JSON.stringify(val) !== "{}") {
+          for (let item in val) {
+            if (item == "level" || item == "subject") {
+              this.gameData.data[item] = [val[item]];
+            } else {
+              this.gameData.data = val;
+            }
+          }
+          this.gameData.fileList = [{ url: JSON.parse(val.img)[0] }];
+          this.operation = "edit";
+        } else {
+          this.operation = "add";
+          this.gameData.data = {};
+          this.gameData.fileList = [];
+        }
+      },
+      immediate: true
+    }
+  },
+  methods: {
+    cancel() {
+      this.$emit("update:dialogVisible", false);
+    },
+    clickAddGame() {
+      this.$refs.gameRef.validate(vaild => {
+        if (vaild) {
+          const data = {};
+          for (let item in this.gameData.data) {
+            if (item == "img") {
+              data[item] = JSON.stringify([this.gameData.data[item]]);
+            } else {
+              data[item] = this.gameData.data[item].toString();
+            }
+          }
+          data["publisher"] = "1";
+          if (this.operation === "add") {
+            addGame(data).then(data => {
+              if (data["code"] === 0) {
+                this.$emit("update:dialogVisible", false);
+                this.$emit("confirm", true);
+                successMessage("发布成功");
+              }
+            });
+          } else {
+            editGame(data, data["id"]).then(data => {
+              if (data["code"] === 0) {
+                this.$emit("update:dialogVisible", false);
+                this.$emit("confirm", true);
+                successMessage("修改成功");
+              }
+            });
+          }
+        }
+      });
+    }
+  }
+};
+</script>
+<template>
+  <div>
+    <el-form
+      ref="gameRef"
+      :model="gameData.data"
+      label-width="auto"
+      :rules="rules"
+    >
+      <el-form-item label="图片上传" prop="img" required>
+        <el-upload
+          class="upload-demo flex"
+          :limit="1"
+          name="image"
+          action
+          :http-request="httpRequest"
+          :file-list="gameData.fileList"
+          list-type="picture"
+        >
+          <div class="upload-icon mr-10">
+            <iconifyIconOnline icon="plus" />
+          </div>
+        </el-upload>
+      </el-form-item>
+      <el-form-item prop="name" label="赛事名称" required>
+        <el-input v-model="gameData.data.name" />
+      </el-form-item>
+      <el-form-item prop="name" label="主办方" required>
+        <el-input v-model="gameData.data.organizer" />
+      </el-form-item>
+      <el-form-item prop="game_time" label="比赛时间" required>
+        <el-date-picker
+          v-model="gameData.data.game_time"
+          type="datetime"
+          placeholder="选择比赛时间"
+          value-format="YYYY-MM-DD HH:mm:ss"
+        />
+      </el-form-item>
+      <el-form-item prop="sign_up_time" label="报名截止时间" required>
+        <el-date-picker
+          v-model="gameData.data.sign_up_time"
+          placeholder="选择报名截止时间"
+          value-format="YYYY-MM-DD"
+        />
+      </el-form-item>
+      <el-form-item prop="subject" label="竞赛科目" required>
+        <el-cascader
+          v-model="gameData.data.subject"
+          :options="subject"
+          placeholder="请选择竞赛科目"
+        />
+      </el-form-item>
+      <el-form-item prop="level" label="竞赛级别" required>
+        <el-cascader
+          v-model="gameData.data.level"
+          :options="level"
+          placeholder="请选择竞赛级别"
+        />
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="clickAddGame">提交</el-button>
+        <el-button type="danger" @click="cancel">取消</el-button>
+      </el-form-item>
+    </el-form>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+.upload-icon {
+  width: 60px;
+  border-radius: 5px;
+  height: 60px;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  justify-content: center;
+}
+
+:deep(.el-upload-list__item .el-upload-list__item-thumbnail) {
+  z-index: -1;
+}
+
+:deep(.el-date-editor .el-input__inner) {
+  padding-left: 30px !important;
+}
+</style>
