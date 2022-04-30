@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-04-18 22:35:49
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-20 17:15:07
+ * @LastEditTime: 2022-04-30 16:08:57
 -->
 <script setup>
 import { reactive, ref } from "vue";
@@ -18,7 +18,9 @@ const total = ref(0);
 
 //初始化数据函数
 const getGameinit = () => {
-  getGame(page.value).then(({ data }) => {
+  getGame(page.value, {
+    uid: "n"
+  }).then(({ data }) => {
     initData.dataList = data.gameList;
     limit.value = data.limit;
     total.value = data.total;
@@ -45,7 +47,8 @@ export default {
     return {
       dialogVisible: false,
       headerStyle: { "background-color": "rgba(0,0,0,0.05)" },
-      editGameData: {}
+      editGameData: {},
+      contentDialog: false
     };
   },
 
@@ -86,11 +89,16 @@ export default {
       <el-table-column prop="game_time" label="比赛时间" width="160" />
       <el-table-column prop="sign_up_time" label="报名截止时间" width="120" />
       <el-table-column prop="collections" label="收藏人数" width="90" />
-      <!-- <el-table-column label="创建时间" width="180">
+      <el-table-column label="详情" width="90">
         <template #default="scope">
-          {{ timeFormat(scope.row.created_at) }}
+          <el-button type="primary" size="small" @click="contentDialog = true"
+            >查看</el-button
+          >
+          <el-dialog title="赛事详情" append-to-body v-model="contentDialog">
+            {{ scope.row.content }}
+          </el-dialog>
         </template>
-      </el-table-column> -->
+      </el-table-column>
       <el-table-column label="操作" width="180">
         <template #default="scope">
           <div class="flex">

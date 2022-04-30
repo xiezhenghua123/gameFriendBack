@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-04-18 22:35:32
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-20 17:17:33
+ * @LastEditTime: 2022-04-30 16:04:42
 -->
 <script setup>
 import { reactive } from "vue";
@@ -56,6 +56,11 @@ export default {
         }
       ],
       rules: {
+        content: {
+          required: true,
+          message: "请填写赛事详情",
+          trigger: "change"
+        },
         img: {
           required: true,
           message: "请上传海报",
@@ -222,6 +227,9 @@ export default {
           :options="level"
           placeholder="请选择竞赛级别"
         />
+      </el-form-item>
+      <el-form-item prop="content" label="赛事详情" required>
+        <el-input v-model="gameData.data.content" type="textarea" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="clickAddGame">提交</el-button>

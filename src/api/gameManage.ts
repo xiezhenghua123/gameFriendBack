@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-04-18 20:46:43
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-20 16:33:04
+ * @LastEditTime: 2022-04-30 16:44:11
  */
 import { http } from "../utils/http";
 
@@ -23,8 +23,12 @@ export const editGame = (data: Object, id: String) => {
 export const getGameDetails = (data: Object) => {
   return http.request("get", "/game", { data });
 };
-export const getGame = (data: String) => {
-  return http.request("get", `/game/list/${data}`);
+export const getGame = (page: String, data: Object) => {
+  return http.get(`/game/list/${page}`, {
+    params: {
+      uid: data["uid"]
+    }
+  });
 };
 export const imageUpload = data => {
   const param = new FormData();

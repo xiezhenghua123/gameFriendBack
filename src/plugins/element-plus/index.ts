@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-04-16 23:04:25
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-20 16:44:07
+ * @LastEditTime: 2022-04-30 17:30:30
  */
 import { App, Component } from "vue";
 import {
@@ -52,7 +52,8 @@ import {
   ElPagination,
   // 指令
   ElLoading,
-  ElInfiniteScroll
+  ElInfiniteScroll,
+  ElImage
 } from "element-plus";
 
 // Directives
@@ -100,7 +101,8 @@ const components = [
   ElCollapse,
   ElCollapseItem,
   ElDialog,
-  ElCard
+  ElCard,
+  ElImage
 ];
 
 export function useElementPlus(app: App) {
