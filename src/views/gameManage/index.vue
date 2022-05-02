@@ -4,55 +4,43 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-04-18 22:35:49
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-30 16:08:57
+ * @LastEditTime: 2022-05-02 09:31:45
 -->
-<script setup>
-import { reactive, ref } from "vue";
-import { getGame, removeGame } from "/@/api/gameManage";
-import { successMessage } from "/@/utils/message";
-
-const initData = reactive({ dataList: [] });
-const page = ref(1);
-const limit = ref(10);
-const total = ref(0);
-
-//初始化数据函数
-const getGameinit = () => {
-  getGame(page.value, {
-    uid: "n"
-  }).then(({ data }) => {
-    initData.dataList = data.gameList;
-    limit.value = data.limit;
-    total.value = data.total;
-  });
-};
-// 初始化数据;
-getGameinit();
-
-// 删除比赛
-const clickRemoveGame = id => {
-  removeGame(id).then(({ code }) => {
-    if (code === 0) {
-      getGameinit();
-      successMessage("删除成功");
-    }
-  });
-};
-</script>
 
 <script>
+import { getGame, removeGame } from "/@/api/gameManage";
+import { successMessage } from "/@/utils/message";
 import addGameComponent from "./addGame/index.vue";
 export default {
   data() {
     return {
+      initData: {
+        dataList: []
+      },
+      page: 1,
+      limit: 10,
+      total: 0,
       dialogVisible: false,
       headerStyle: { "background-color": "rgba(0,0,0,0.05)" },
       editGameData: {},
       contentDialog: false
     };
   },
-
+  components: {
+    addGameComponent
+  },
+  mounted() {
+    this.getGameinit();
+  },
   methods: {
+    clickRemoveGame(id) {
+      removeGame(id).then(({ code }) => {
+        if (code === 0) {
+          this.getGameinit();
+          successMessage("删除成功");
+        }
+      });
+    },
     editGame(data) {
       this.editGameData = data;
       this.dialogVisible = true;
@@ -64,7 +52,17 @@ export default {
     confirm(data) {
       if (data) {
         this.getGameinit();
+        this.dialogVisible = false;
       }
+    },
+    getGameinit() {
+      getGame(this.page.toString(), {
+        uid: "n"
+      }).then(({ data }) => {
+        this.initData.dataList = data.gameList;
+        this.limit = data.limit;
+        this.total = data.total;
+      });
     }
     // timeFormat(time) {
     //   return time.replace(/T/g, " ").replace(/\.[\d]{6}Z/g, "");
@@ -128,14 +126,15 @@ export default {
       />
     </div>
     <el-dialog
-      v-model="dialogVisible"
+      :model-value="dialogVisible"
       title="发布比赛"
       :close-on-click-modal="false"
+      @close="dialogVisible = false"
     >
       <addGameComponent
-        v-model:dialogVisible="dialogVisible"
         :initData="editGameData"
         @confirm="confirm"
+        @cancel="dialogVisible = false"
       />
     </el-dialog>
   </div>

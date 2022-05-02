@@ -4,9 +4,10 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-04-16 23:04:25
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-17 21:46:46
+ * @LastEditTime: 2022-05-02 08:59:21
 -->
 <script setup lang="ts">
+import logo from "/@/assets/svg/logo.svg?component";
 import { getCurrentInstance } from "vue";
 const props = defineProps({
   collapse: Boolean
@@ -27,9 +28,7 @@ console.log(title);
         class="sidebar-logo-link"
         to="/"
       >
-        <!-- <FontIcon icon="team-iconlogo" svg style="width: 35px; height: 35px" /> -->
-        <img
-          src="../../../assets/svg/logo.svg"
+        <logo
           style="
             width: 35px;
             height: 35px;
@@ -46,9 +45,7 @@ console.log(title);
         class="sidebar-logo-link"
         to="/"
       >
-        <!-- <FontIcon icon="team-iconlogo" svg style="width: 35px; height: 35px" /> -->
-        <img
-          src="../../../assets/svg/logo.svg"
+        <logo
           style="
             width: 35px;
             height: 35px;

@@ -4,29 +4,28 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-04-18 22:35:32
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-30 16:04:42
+ * @LastEditTime: 2022-05-02 08:49:00
 -->
-<script setup>
-import { reactive } from "vue";
+<script>
 import { addGame, imageUpload, editGame } from "/@/api/gameManage";
 import { successMessage } from "/@/utils/message";
-
-const gameData = reactive({
-  data: {},
-  fileList: []
-});
-
-const httpRequest = options => {
-  imageUpload(options.file).then(({ data }) => {
-    gameData.data.img = data;
-  });
-};
-</script>
-<script>
 export default {
   emits: ["confirm"],
   data() {
     return {
+      gameData: {
+        data: {
+          img: "",
+          name: "",
+          organizer: "",
+          game_time: "",
+          sign_up_time: "",
+          subject: "",
+          level: "",
+          content: ""
+        },
+        fileList: []
+      },
       level: [
         {
           label: "校级",
@@ -104,9 +103,6 @@ export default {
   props: {
     initData: {
       type: Object
-    },
-    dialogVisible: {
-      type: Boolean
     }
   },
   watch: {
@@ -132,8 +128,13 @@ export default {
     }
   },
   methods: {
+    httpRequest(options) {
+      imageUpload(options.file).then(({ data }) => {
+        this.gameData.data["img"] = data;
+      });
+    },
     cancel() {
-      this.$emit("update:dialogVisible", false);
+      this.$emit("cancel", false);
     },
     clickAddGame() {
       this.$refs.gameRef.validate(vaild => {
@@ -150,7 +151,7 @@ export default {
           if (this.operation === "add") {
             addGame(data).then(data => {
               if (data["code"] === 0) {
-                this.$emit("update:dialogVisible", false);
+                // this.$emit("update:dialogVisible", false);
                 this.$emit("confirm", true);
                 successMessage("发布成功");
               }
@@ -158,7 +159,7 @@ export default {
           } else {
             editGame(data, data["id"]).then(data => {
               if (data["code"] === 0) {
-                this.$emit("update:dialogVisible", false);
+                // this.$emit("update:dialogVisible", false);
                 this.$emit("confirm", true);
                 successMessage("修改成功");
               }
@@ -183,7 +184,7 @@ export default {
           class="upload-demo flex"
           :limit="1"
           name="image"
-          action
+          action=""
           :http-request="httpRequest"
           :file-list="gameData.fileList"
           list-type="picture"
