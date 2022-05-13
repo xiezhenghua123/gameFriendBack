@@ -1,5 +1,5 @@
 <template>
-  <div class="height-100 bg-fff p-10">
+  <div class="bg-fff p-10">
     <el-button type="primary" class="mb-10" @click="dialogVisible = true"
       >添加管理员</el-button
     >
@@ -79,6 +79,7 @@
 import { getManagerList, removeManager, addManager } from "/@/api/manage-user";
 import { successMessage, errorMessage } from "/@/utils/message";
 import { storageSession } from "/@/utils/storage";
+import { usePermissionStoreHook } from "/@/store/modules/permission";
 export default {
   data() {
     return {
@@ -133,6 +134,13 @@ export default {
   },
   mounted() {
     this.getData();
+  },
+  beforeRouteEnter(to, from, next) {
+    if (usePermissionStoreHook().buttonAuth.includes("superAdmin")) {
+      next();
+    } else {
+      next({ path: "/error/403" });
+    }
   },
   methods: {
     addManager() {

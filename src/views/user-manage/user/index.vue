@@ -4,10 +4,10 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-05-11 18:46:26
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-13 10:51:45
+ * @LastEditTime: 2022-05-13 21:03:03
 -->
 <template>
-  <div class="height-100 bg-fff p-10">
+  <div class="bg-fff p-10">
     <el-table
       :data="data"
       class="mt-10"

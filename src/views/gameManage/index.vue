@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-04-18 22:35:49
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-12 19:48:20
+ * @LastEditTime: 2022-05-13 21:04:22
 -->
 
 <script>
@@ -87,7 +87,7 @@ export default {
 </script>
 
 <template>
-  <div class="height-100 bg-fff p-10">
+  <div class="bg-fff p-10">
     <el-button type="primary" @click="addGame" size="large">发布比赛</el-button>
     <el-table
       :data="initData.dataList"

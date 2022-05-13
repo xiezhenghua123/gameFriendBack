@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-04-13 22:44:07
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-13 20:03:21
+ * @LastEditTime: 2022-05-13 21:04:15
 -->
 <script>
 import { imageUpload } from "/@/api/gameManage";
@@ -115,7 +115,7 @@ export default {
 </script>
 
 <template>
-  <div class="bg-fff p-10 height-100">
+  <div class="bg-fff p-10">
     <el-button type="primary" @click="dialogShow" class="m-10"
       >点击上传</el-button
     >

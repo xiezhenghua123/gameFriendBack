@@ -8,7 +8,7 @@
 -->
 
 <template>
-  <div class="height-100 bg-fff p-10">
+  <div class="bg-fff p-10">
     <div>
       <el-table :data="data" :header-cell-style="headerStyle" border>
         <el-table-column prop="id" label="编号" />

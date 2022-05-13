@@ -1,3 +1,11 @@
+/*
+ * @Descripttion:
+ * @version:
+ * @Author: ZhenghuaXie
+ * @Date: 2022-04-16 23:04:25
+ * @LastEditors: ZhenghuaXie
+ * @LastEditTime: 2022-05-14 01:42:46
+ */
 import { defineStore } from "pinia";
 import { store } from "/@/store";
 import { cacheType } from "./types";
@@ -22,14 +30,11 @@ export const usePermissionStore = defineStore({
   actions: {
     // 获取异步路由菜单
     asyncActionRoutes(routes) {
+      this.buttonAuth = [routes[0].meta.authority];
       if (this.wholeMenus.length > 0) return;
-      this.wholeMenus = filterTree(
-        ascending(this.constantMenus.concat(routes))
-      );
+      this.wholeMenus = filterTree(ascending(this.constantMenus));
 
-      this.menusTree = cloneDeep(
-        filterTree(ascending(this.constantMenus.concat(routes)))
-      );
+      this.menusTree = cloneDeep(filterTree(ascending(this.constantMenus)));
 
       const getButtonAuth = (arrRoutes: Array<RouteConfigs>) => {
         if (!arrRoutes || !arrRoutes.length) return;

@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-04-16 23:04:25
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-13 15:13:44
+ * @LastEditTime: 2022-05-14 01:38:38
  */
 import { defineStore } from "pinia";
 import { initRouter } from "/@/router/utils";
@@ -43,11 +43,14 @@ export const useUserStore = defineStore({
           .then(data => {
             if (data["code"] === 0) {
               setToken(data);
-              initRouter(data["data"]["name"]).then(() => {});
+              initRouter(
+                data["data"]["level"] == 0 ? "superAdmin" : "admin"
+              ).then(() => {});
               storageSession.setItem("info", {
                 username: data["data"]["name"],
                 accessToken: data["data"]["api_token"],
-                id: data["data"]["id"]
+                id: data["data"]["id"],
+                level: data["data"]["level"]
               });
               this.SET_NAME(data["data"]["name"]);
               resolve(true);

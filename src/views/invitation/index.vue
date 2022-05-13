@@ -7,7 +7,7 @@
  * @LastEditTime: 2022-05-12 19:48:31
 -->
 <template>
-  <div class="height-100 bg-fff p-10">
+  <div class="bg-fff p-10">
     <el-table
       :data="initData"
       class="mt-10"
