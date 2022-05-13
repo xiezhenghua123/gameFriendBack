@@ -4,12 +4,12 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-04-16 23:04:25
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-18 21:45:33
+ * @LastEditTime: 2022-05-13 10:26:00
 -->
 
 <template>
   <div class="box">
-    欢迎来到<span style="color: skyblue">“赛事寻Ta”</span>后台管理系统
+    欢迎来到<span style="color: skyblue">“赛事寻友”</span>后台管理平台
   </div>
 </template>
 <style lang="scss" scoped>

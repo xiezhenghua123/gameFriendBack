@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-04-18 22:35:32
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-02 08:49:00
+ * @LastEditTime: 2022-05-10 10:44:30
 -->
 <script>
 import { addGame, imageUpload, editGame } from "/@/api/gameManage";
@@ -42,16 +42,32 @@ export default {
       ],
       subject: [
         {
-          label: "理科",
-          value: "理科"
+          label: "数学建模竞赛",
+          value: "数学建模竞赛"
         },
         {
-          label: "工科",
-          value: "工科"
+          label: "物理竞赛",
+          value: "物理竞赛"
         },
         {
-          label: "文科",
-          value: "文科"
+          label: "电子竞赛",
+          value: "电子竞赛"
+        },
+        {
+          label: "创新创业大赛",
+          value: "创新创业大赛"
+        },
+        {
+          label: "市场调研大赛",
+          value: "市场调研大赛"
+        },
+        {
+          label: "程序设计大赛",
+          value: "程序设计大赛"
+        },
+        {
+          label: "法庭模拟大赛",
+          value: "法庭模拟大赛"
         }
       ],
       rules: {
@@ -231,6 +247,7 @@ export default {
       </el-form-item>
       <el-form-item prop="content" label="赛事详情" required>
         <el-input v-model="gameData.data.content" type="textarea" />
+        <div style="color: #bbb">备注:在赛事详情里面写上联系方式会更好哦！</div>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="clickAddGame">提交</el-button>

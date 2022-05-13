@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-04-16 23:04:25
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-30 17:30:30
+ * @LastEditTime: 2022-05-09 16:01:28
  */
 import { App, Component } from "vue";
 import {
@@ -50,6 +50,8 @@ import {
   ElTable,
   ElTableColumn,
   ElPagination,
+  ElPopconfirm,
+  ElImageViewer,
   // 指令
   ElLoading,
   ElInfiniteScroll,
@@ -102,7 +104,9 @@ const components = [
   ElCollapseItem,
   ElDialog,
   ElCard,
-  ElImage
+  ElImage,
+  ElPopconfirm,
+  ElImageViewer
 ];
 
 export function useElementPlus(app: App) {

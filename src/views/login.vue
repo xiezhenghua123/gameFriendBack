@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { initRouter } from "/@/router/utils";
+
 import { storageSession } from "/@/utils/storage";
 import { addClass, removeClass } from "/@/utils/operate";
 import bg from "/@/assets/login/bg.png";
@@ -23,13 +23,7 @@ const onLogin = (): void => {
     })
     .then(code => {
       if (code) {
-        storageSession.setItem("info", {
-          username: user.value,
-          accessToken: useUserStoreHook().token
-        });
-        useUserStoreHook().SET_NAME(user.value);
         router.push("/");
-        initRouter("admin").then(() => {});
       } else {
         errorMessage("账号或密码错误！");
       }
@@ -78,7 +72,7 @@ function onPwdBlur() {
             }
           }"
         >
-          赛事寻Ta后台管理系统
+          赛事寻友后台管理平台
         </h2>
         <div
           class="input-group user focus"

@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-04-18 20:46:43
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-30 16:44:11
+ * @LastEditTime: 2022-05-11 18:30:49
  */
 import { http } from "../utils/http";
 
@@ -24,11 +24,7 @@ export const getGameDetails = (data: Object) => {
   return http.request("get", "/game", { data });
 };
 export const getGame = (page: String, data: Object) => {
-  return http.get(`/game/list/${page}`, {
-    params: {
-      uid: data["uid"]
-    }
-  });
+  return http.post(`/game/list/${page}`, { data });
 };
 export const imageUpload = data => {
   const param = new FormData();

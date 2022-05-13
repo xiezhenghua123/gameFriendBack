@@ -1,3 +1,11 @@
+/*
+ * @Descripttion:
+ * @version:
+ * @Author: ZhenghuaXie
+ * @Date: 2022-04-16 23:04:25
+ * @LastEditors: ZhenghuaXie
+ * @LastEditTime: 2022-05-12 21:34:27
+ */
 import Cookies from "js-cookie";
 import { useUserStoreHook } from "/@/store/modules/user";
 
@@ -7,6 +15,7 @@ type paramsMapType = {
   name: string;
   expires: number;
   token: string;
+  level: String;
 };
 
 // 获取token
@@ -15,16 +24,21 @@ export function getToken() {
   return Cookies.get("authorized-token");
 }
 
+export function getLevel() {
+  return sessionStorage.getItem("level");
+}
 // 设置token以及过期时间（cookies、sessionStorage各一份）
 // 后端需要将用户信息和token以及过期时间都返回给前端，过期时间主要用于刷新token
 export function setToken(dataList) {
   const { data, expires, name } = dataList;
-  const token = data.token;
+  const token = data.api_token;
+  const level = data.level;
   // 提取关键信息进行存储
   const paramsMap: paramsMapType = {
     name,
     expires: Date.now() + parseInt(expires),
-    token
+    token,
+    level
   };
   const dataString = JSON.stringify(paramsMap);
   useUserStoreHook().SET_TOKEN(token);
@@ -35,6 +49,7 @@ export function setToken(dataList) {
   //     })
   //   : Cookies.set(TokenKey, dataString);
   Cookies.set(TokenKey, token);
+  sessionStorage.setItem("level", level);
   sessionStorage.setItem(TokenKey, dataString);
 }
 

@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-04-16 23:04:25
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-18 16:29:54
+ * @LastEditTime: 2022-05-13 10:51:16
  */
 import { http } from "../utils/http";
 
@@ -24,6 +24,13 @@ export const getLogin = (data: object) => {
   return http.request("post", "/manager/login", { data });
 };
 
+export const getUserList = (page: Number) => {
+  return http.get(`user/list/${page}`);
+};
+
+export const disableUser = (id: String, data: Object) => {
+  return http.request("put", `${id}/update`, { data });
+};
 // 刷新token
 // export const refreshToken = (data: object) => {
 //   return http.request("post", "/refreshToken", { data });

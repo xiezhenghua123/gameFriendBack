@@ -32,17 +32,19 @@ import homeRouter from "./modules/home";
 import gameRouter from "./modules/game-manage";
 import remainingRouter from "./modules/remaining";
 import bannerRouter from "./modules/banner";
-import dataStatisticsRouter from "./modules/data-statistics";
+import invitationRouter from "./modules/invitation";
 import feedbackRouter from "./modules/feedback";
+import userManage from "./modules/user-manage";
 
 // 原始静态路由（未做任何处理）
 const routes = [
   homeRouter,
   gameRouter,
   bannerRouter,
-  dataStatisticsRouter,
+  invitationRouter,
   // errorRouter,
-  feedbackRouter
+  feedbackRouter,
+  userManage
 ];
 
 // 导出处理后的静态路由（三级及以上的路由全部拍成二级）

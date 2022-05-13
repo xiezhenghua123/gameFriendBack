@@ -4,9 +4,10 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-04-16 23:04:25
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-18 21:33:55
+ * @LastEditTime: 2022-05-13 15:13:44
  */
 import { defineStore } from "pinia";
+import { initRouter } from "/@/router/utils";
 import { store } from "/@/store";
 import { userType } from "./types";
 import { router } from "/@/router";
@@ -42,6 +43,13 @@ export const useUserStore = defineStore({
           .then(data => {
             if (data["code"] === 0) {
               setToken(data);
+              initRouter(data["data"]["name"]).then(() => {});
+              storageSession.setItem("info", {
+                username: data["data"]["name"],
+                accessToken: data["data"]["api_token"],
+                id: data["data"]["id"]
+              });
+              this.SET_NAME(data["data"]["name"]);
               resolve(true);
             } else {
               resolve(false);

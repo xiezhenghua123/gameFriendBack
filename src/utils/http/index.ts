@@ -9,7 +9,7 @@ import {
 import qs from "qs";
 import NProgress from "../progress";
 import { loadEnv } from "@build/index";
-import { getToken } from "/@/utils/auth";
+import { getToken, getLevel } from "/@/utils/auth";
 import { errorMessage } from "../message";
 import { router } from "/@/router";
 
@@ -84,6 +84,7 @@ class PureHttp {
           // }
 
           config.headers["Authorization"] = "Bearer " + token;
+          config.headers["session"] = getLevel();
           return $config;
         } else {
           return $config;
@@ -104,11 +105,9 @@ class PureHttp {
         // 关闭进度条动画
         NProgress.done();
 
-        if (response.data.code === 13) {
-          console.log(response.data);
-          errorMessage("登录过期，请重新登录！");
-          router.push("/login");
-          return;
+        if (response.data.code != 0) {
+          errorMessage(response.data.data);
+          return Promise.reject(response.data.data);
         }
         // 优先判断post/get等方法是否传入回掉，否则执行初始化设置等回掉
         if (typeof $config.beforeResponseCallback === "function") {
