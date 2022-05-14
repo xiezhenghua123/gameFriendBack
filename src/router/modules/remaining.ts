@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-04-16 23:04:25
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-04-18 16:04:11
+ * @LastEditTime: 2022-05-14 14:44:26
  */
 import { $t } from "/@/plugins/i18n";
 const Layout = () => import("/@/layout/index.vue");
@@ -63,6 +63,11 @@ const remainingRouter = [
         path: "/redirect/:path(.*)",
         name: "redirect",
         component: () => import("/@/layout/redirect.vue")
+      },
+      {
+        path: "/inner/403",
+        name: "/inner/403",
+        component: () => import("/@/views/error/403.vue")
       }
     ]
   }

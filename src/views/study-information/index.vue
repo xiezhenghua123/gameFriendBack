@@ -4,12 +4,11 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-04-13 22:44:07
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-14 20:20:47
+ * @LastEditTime: 2022-05-14 21:08:32
 -->
 <script>
 import { imageUpload } from "/@/api/gameManage";
-import { uploadBanner, getBanList, deleteBanner } from "/@/api/banner";
-import { getGame } from "/@/api/gameManage";
+import { uploadStudy, getStudyList, deleteStudy } from "/@/api/study";
 import { storageSession } from "/@/utils/storage";
 import { successMessage } from "/@/utils/message";
 export default {
@@ -20,27 +19,58 @@ export default {
       page: 1,
       total: 0,
       limit: 10,
-      pictureIndex: 0,
-      pictureShow: false,
       addData: {
-        image: "",
+        url: "",
         name: "",
         manager_name: "",
-        game_id: "",
+        subject: "",
         manager_id: ""
       },
+      subjectOptions: [
+        {
+          label: "数学建模竞赛",
+          value: "数学建模竞赛"
+        },
+        {
+          label: "物理竞赛",
+          value: "物理竞赛"
+        },
+        {
+          label: "电子竞赛",
+          value: "电子竞赛"
+        },
+        {
+          label: "创新创业大赛",
+          value: "创新创业大赛"
+        },
+        {
+          label: "市场调研大赛",
+          value: "市场调研大赛"
+        },
+        {
+          label: "程序设计大赛",
+          value: "程序设计大赛"
+        },
+        {
+          label: "法庭模拟大赛",
+          value: "法庭模拟大赛"
+        }
+      ],
       rules: {
-        image: {
+        url: {
           required: true,
-          message: "请上传海报"
+          message: "请上传文件"
         },
         name: {
           required: true,
-          message: "请选择比赛"
+          message: "请填写资源名称"
+        },
+        subject: {
+          required: true,
+          message: "请选择资源类型"
         }
       },
-      dialogVisible: false,
-      options: []
+      dialogVisible: false
     };
   },
   mounted() {
@@ -57,14 +87,17 @@ export default {
     }
   },
   methods: {
+    downLoad(url) {
+      window.open(url);
+    },
     del(id) {
-      deleteBanner(id).then(() => {
+      deleteStudy(id).then(() => {
         successMessage("删除成功！");
         this.getData();
       });
     },
     getData() {
-      getBanList(this.page).then(({ data }) => {
+      getStudyList(this.page).then(({ data }) => {
         this.data = data.bannerList;
         this.total = data.total;
         this.limit = data.limit;
@@ -72,34 +105,17 @@ export default {
     },
     httpRequest(options) {
       imageUpload(options.file).then(({ data }) => {
-        this.addData.image = data;
+        this.addData.url = data;
       });
     },
     timeFormat(time) {
       return time.replace(/T/g, " ").replace(/\.[\d]{6}Z/g, "");
     },
-    pictureShowF(index) {
-      this.pictureIndex = index;
-      this.pictureShow = true;
-    },
     change(val) {
-      this.addData.name = val[0].name;
-      this.addData.game_id = val[0].game_id.toString();
+      this.addData.subject = val[0];
     },
     dialogShow() {
       this.dialogVisible = true;
-      getGame("1", {
-        uid: "n",
-        level: 0,
-        subject: 0
-      }).then(({ data }) => {
-        this.options = data.gameList.map(item => {
-          return {
-            label: item.name,
-            value: { name: item.name, game_id: item.id }
-          };
-        });
-      });
     },
     addBanner() {
       this.$refs.ref.validate(vaild => {
@@ -109,7 +125,7 @@ export default {
             manager_id: storageSession.getItem("info").id.toString(),
             manager_name: storageSession.getItem("info").username
           };
-          uploadBanner(data).then(() => {
+          uploadStudy(data).then(() => {
             successMessage("上传成功！");
             this.getData();
             this.dialogVisible = false;
@@ -128,18 +144,25 @@ export default {
     >
     <el-table :data="data" border :header-cell-style="headerStyle">
       <el-table-column prop="id" label="编号" width="80" />
-      <el-table-column label="比赛名称" prop="name" min-width="120" />
-      <el-table-column label="海报" width="100">
+      <el-table-column label="资源名称" prop="name" min-width="120" />
+      <el-table-column label="资源类型" prop="subject" />
+      <el-table-column label="文件" width="120">
         <template #default="scope">
-          <el-image
-            style="width: 50px; height: 30px"
-            :src="scope.row.image"
-            fit="cover"
-            @click="pictureShowF(scope.$index)"
-          />
+          <div
+            @click="downLoad(scope.row.url)"
+            class="flex"
+            style="cursor: pointer"
+          >
+            <img
+              src="../../assets/svg/file.svg"
+              alt=""
+              style="width: 20px; height: 20px"
+            />
+            &nbsp;下载
+          </div>
         </template>
       </el-table-column>
-      <el-table-column prop="manager_name" label="发布管理员" width="100" />
+      <el-table-column prop="manager_name" label="发布管理员" />
       <el-table-column label="发布时间" min-width="160">
         <template #default="scope">
           {{ timeFormat(scope.row.created_at) }}
@@ -160,14 +183,6 @@ export default {
         </template>
       </el-table-column>
     </el-table>
-    <el-image-viewer
-      v-if="pictureShow"
-      teleported
-      :initial-index="pictureIndex"
-      hide-on-click-modal
-      :url-list="pictureList"
-      @close="pictureShow = false"
-    />
     <div class="mt-10 flex" style="justify-content: right">
       <el-pagination
         background
@@ -187,25 +202,27 @@ export default {
       @close="dialogVisible = false"
     >
       <el-form ref="ref" :model="addData" label-width="auto" :rules="rules">
-        <el-form-item label="海报" required prop="image">
+        <el-form-item label="文件" required prop="url">
           <el-upload
             class="upload-demo flex"
             :limit="1"
             action=""
             :http-request="httpRequest"
             :file-list="fileList"
-            list-type="picture"
           >
             <div class="upload-icon mr-10">
               <iconifyIconOnline icon="plus" />
             </div>
           </el-upload>
         </el-form-item>
-        <el-form-item prop="name" label="赛事名称" required>
+        <el-form-item prop="name" label="资源名称" required>
+          <el-input v-model="addData.name" />
+        </el-form-item>
+        <el-form-item prop="subject" label="资源类型" required>
           <el-cascader
             @change="change"
-            :options="options"
-            placeholder="请选择比赛"
+            :options="subjectOptions"
+            placeholder="请选择资源类型"
           />
         </el-form-item>
         <el-form-item>

@@ -139,7 +139,7 @@ export default {
     if (usePermissionStoreHook().buttonAuth.includes("superAdmin")) {
       next();
     } else {
-      next({ path: "/error/403" });
+      next({ path: "/inner/403" });
     }
   },
   methods: {

@@ -35,6 +35,7 @@ import bannerRouter from "./modules/banner";
 import invitationRouter from "./modules/invitation";
 import feedbackRouter from "./modules/feedback";
 import userManage from "./modules/user-manage";
+import studyRouter from "./modules/study-information";
 
 // 原始静态路由（未做任何处理）
 const routes = [
@@ -44,7 +45,8 @@ const routes = [
   invitationRouter,
   // errorRouter,
   feedbackRouter,
-  userManage
+  userManage,
+  studyRouter
 ];
 
 // 导出处理后的静态路由（三级及以上的路由全部拍成二级）
