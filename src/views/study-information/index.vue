@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-04-13 22:44:07
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-15 16:20:01
+ * @LastEditTime: 2022-05-15 17:01:14
 -->
 <script>
 import { imageUpload } from "/@/api/gameManage";
@@ -146,31 +146,32 @@ export default {
       <el-table-column prop="id" label="编号" width="80" />
       <el-table-column label="资源名称" prop="name" min-width="120" />
       <el-table-column label="资源类型" prop="subject" />
-      <el-table-column label="文件" width="120">
-        <template #default="scope">
-          <el-button @click="downLoad(scope.row.url)" type="primary" size="mini"
-            >下载</el-button
-          >
-        </template>
-      </el-table-column>
       <el-table-column prop="manager_name" label="发布管理员" />
       <el-table-column label="发布时间" min-width="160">
         <template #default="scope">
           {{ timeFormat(scope.row.created_at) }}
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="120">
+      <el-table-column label="操作" width="200">
         <template #default="scope">
-          <el-popconfirm
-            title="确认删除?"
-            confirm-button-text="确认"
-            cancel-button-text="取消"
-            @confirm="del(scope.row.id)"
-          >
-            <template #reference>
-              <el-button type="danger" size="mini"> 删除 </el-button>
-            </template>
-          </el-popconfirm>
+          <div class="flex">
+            <el-popconfirm
+              title="确认删除?"
+              confirm-button-text="确认"
+              cancel-button-text="取消"
+              @confirm="del(scope.row.id)"
+            >
+              <template #reference>
+                <el-button type="danger" size="mini"> 删除 </el-button>
+              </template>
+            </el-popconfirm>
+            <el-button
+              @click="downLoad(scope.row.url)"
+              type="primary"
+              size="mini"
+              >下载</el-button
+            >
+          </div>
         </template>
       </el-table-column>
     </el-table>
