@@ -4,7 +4,7 @@
  * @Author: ZhenghuaXie
  * @Date: 2022-04-13 22:44:07
  * @LastEditors: ZhenghuaXie
- * @LastEditTime: 2022-05-14 21:08:32
+ * @LastEditTime: 2022-05-15 16:20:01
 -->
 <script>
 import { imageUpload } from "/@/api/gameManage";
@@ -148,18 +148,9 @@ export default {
       <el-table-column label="资源类型" prop="subject" />
       <el-table-column label="文件" width="120">
         <template #default="scope">
-          <div
-            @click="downLoad(scope.row.url)"
-            class="flex"
-            style="cursor: pointer"
+          <el-button @click="downLoad(scope.row.url)" type="primary" size="mini"
+            >下载</el-button
           >
-            <img
-              src="../../assets/svg/file.svg"
-              alt=""
-              style="width: 20px; height: 20px"
-            />
-            &nbsp;下载
-          </div>
         </template>
       </el-table-column>
       <el-table-column prop="manager_name" label="发布管理员" />
