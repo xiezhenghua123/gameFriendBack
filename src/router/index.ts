@@ -29,7 +29,7 @@ import {
 } from "./utils";
 
 import homeRouter from "./modules/home";
-import gameRouter from "./modules/game-manage";
+import dataRouter from "./modules/data-static";
 import remainingRouter from "./modules/remaining";
 import bannerRouter from "./modules/banner";
 import invitationRouter from "./modules/invitation";
@@ -40,13 +40,13 @@ import studyRouter from "./modules/study-information";
 // 原始静态路由（未做任何处理）
 const routes = [
   homeRouter,
-  gameRouter,
   bannerRouter,
   invitationRouter,
   // errorRouter,
   feedbackRouter,
   userManage,
-  studyRouter
+  studyRouter,
+  dataRouter
 ];
 
 // 导出处理后的静态路由（三级及以上的路由全部拍成二级）
